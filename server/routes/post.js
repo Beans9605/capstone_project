@@ -79,27 +79,30 @@ router.post('/get/allProducts',(req,res) => {
 
 
 //상품 정보 디테일한거 한 개
-router.get('/:id',  (req,res) => {
+router.get('/get/posts_by_id',  (req,res) => {
 
+    let type = req.query.type
     let postId = req.query.id
      Post.find({_id: postId})
-
+    .populate('author')
     .exec((err,post) => {
         if(err) return res.status(200).json({ "status": false, "result": "Request Failed!" })
         return res.status(200).json({success: true, "result": 'Success!',post})
     })
 })
-
 //상품 카테고리에 맞는거 조회
-router.post('/posts_by_category',auth, (req,res) => {
+router.post('/get/posts_by_category', (req,res) => {
 
-    let categoryId = req.body._id
-     Post.find({pcategory:categoryId})
+    let categoryId = req.query.category
+   
+ 
+    Post.find({pcategory:categoryId})
     .exec((err,post) => {
         if(err) return res.status(200).json({ "status": false, "result": "Request Failed!" })
         return res.status(200).json({success: true, "result": 'Success!',post})
     })
 })
 
-
+// onClick={() => {history.push({
+//     pathname: "/postDetail/${post._id}" })}}
 module.exports = router;
